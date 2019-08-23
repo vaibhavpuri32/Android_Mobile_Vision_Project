@@ -19,9 +19,7 @@ class ImageInput extends StatefulWidget {
 class _ImageInput extends State<ImageInput> {
   File _storedImage;
 
-
-
-  Future<void> _takePicture() async {
+  Future<void> _takePictureC() async {
     final _imageFile =
         await ImagePicker.pickImage(source: ImageSource.camera, maxWidth: 600);
     if (_imageFile == null) {
@@ -31,8 +29,23 @@ class _ImageInput extends State<ImageInput> {
       _storedImage = _imageFile;
     });
 
+    final appDir = await syspath.getApplicationDocumentsDirectory();
+    final filename = path.basename(_imageFile.path);
+    final savedImage = await _imageFile.copy('${appDir.path}/$filename');
+    widget.onselectimage(savedImage);
+  }
 
-     final appDir = await syspath.getApplicationDocumentsDirectory();
+  Future<void> _takePictureG() async {
+    final _imageFile =
+    await ImagePicker.pickImage(source: ImageSource.gallery, maxWidth: 600);
+    if (_imageFile == null) {
+      return;
+    }
+    setState(() {
+      _storedImage = _imageFile;
+    });
+
+    final appDir = await syspath.getApplicationDocumentsDirectory();
     final filename = path.basename(_imageFile.path);
     final savedImage = await _imageFile.copy('${appDir.path}/$filename');
     widget.onselectimage(savedImage);
@@ -46,8 +59,10 @@ class _ImageInput extends State<ImageInput> {
           width: 250,
           height: 250,
           decoration: BoxDecoration(
-            border: Border.all(width: 2, color: Colors.yellow,),
-
+            border: Border.all(
+              width: 2,
+              color: Theme.of(context).primaryColor,
+            ),
           ),
           child: _storedImage != null
               ? Image.file(
@@ -62,15 +77,22 @@ class _ImageInput extends State<ImageInput> {
           alignment: Alignment.center,
         ),
         FlatButton.icon(
-              onPressed: _takePicture,
-              icon: Icon(Icons.camera),
-              label: Text(
-                "Take Picture",
-                style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16),
-              )),
-
+            onPressed: _takePictureC,
+            icon: Icon(Icons.camera),
+            label: Text(
+              "Take Picture",
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor, fontSize: 16,fontWeight: FontWeight.bold),
+            )),
+        FlatButton.icon(
+            onPressed: _takePictureG,
+            icon: Icon(Icons.attach_file),
+            label: Text(
+              "Choose From gallery",
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor, fontSize: 16, fontWeight: FontWeight.bold),
+            )),
       ],
     );
   }
 }
-

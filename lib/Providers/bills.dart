@@ -1,23 +1,46 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
-
+import '../helper/db_helper.dart';
 import '../models/bill.dart';
 
-class Bills extends ChangeNotifier {
+class Bills with ChangeNotifier {
   List<Bill> _items = [];
-  //a getter function so that , whenever we perform any task on the List , we perform on the same List
+
   List<Bill> get items {
     return [..._items];
   }
-  // a fuction which can add new Elements to the Bill
-  void addBill(String pickedTitle, File pickedImage, double price) {
+
+  void addBill(
+      String pickedTitle, File pickedImage, double price, DateTime Time) {
     final newBill = Bill(
-        title: pickedTitle,
-        image: pickedImage,
-        id: DateTime.now().toString(),
-        price: price);
+      id: DateTime.now().toString(),
+      price: price,
+      image: pickedImage,
+      title: pickedTitle,
+      time: Time,
+    );
     _items.add(newBill);
+    notifyListeners();
+    DBHelper.insert("user_bills", {
+      "id": newBill.id,
+      "price": newBill.price,
+      "image": newBill.image.path,
+      "title": newBill.title,
+      "time": newBill.time.toString()
+    });
+  }
+
+  Future<void> fetchBills() async {
+    final dataList = await DBHelper.getData("user_bills");
+    _items = dataList
+        .map((item) => Bill(
+            id: item["id"],
+            price: item["price"],
+            image: File(item["image"]),
+            title: item["title"],
+            time: item["time"]))
+        .toList();
+
     notifyListeners();
   }
 }

@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import '../Widgets/main_drawer.dart';
+import 'package:provider/provider.dart';
 import '../Providers/bills.dart';
 import '../Widgets/image_input.dart';
 
@@ -17,21 +18,13 @@ class AddBillsScreen extends StatefulWidget {
 }
 
 class _AddBillsScreen extends State<AddBillsScreen> {
+  var numbers;
   final _titlecontroller = new TextEditingController();
   File _pickedImage;
   String bill = " ";
 
   void _selectimage(File pickedimage) {
     _pickedImage = pickedimage;
-  }
-
-  void _saveBill() {
-    if (_titlecontroller.text.isEmpty || _pickedImage == null) {
-      return;
-    }
-    Provider.of<Bills>(context, listen: false)
-        .addBill(_titlecontroller.text, _pickedImage, double.parse(bill));
-    Navigator.of(context).pop();
   }
 
   Future<void> readText() async {
@@ -47,19 +40,60 @@ class _AddBillsScreen extends State<AddBillsScreen> {
       }
     }
     print(bill);
-    showDialog(
+    print("\n");
+    var doubleRE = RegExp(r"-?(?:\d*\.)?\d+(?:[eE][+-]?\d+)?");
+    numbers = doubleRE.allMatches(bill).map((m) => double.parse(m[0])).toList();
+    int i;
+    for (i = 0; i < numbers.length; i++) {
+      print(numbers[i]);
+    }
+    /*  int i;
+    for(i=0; i<numbers.length; i++)
+      {  print(numbers[i]);
+      print("\n");} */
+    /* showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: Text("The Text is \n "+bill)
-        ));
+          title: Text("The Bill is  Rs "+(numbers[numbers.length-1]).toString(), style: TextStyle(fontSize: 30),)
+        )); */
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return GestureDetector(
+          onTap: () {},
+          child: Center(
+            child: numbers.length > 0
+                ? Text(
+                    "The Bill is  Rs.  " +
+                        (numbers[numbers.length - 1]).toString(),
+                    style: TextStyle(fontSize: 30, color: Theme.of(context).primaryColor),
+                  )
+                : Text(
+                    "No Amount detected",
+                    style: TextStyle(fontSize: 30,color: Theme.of(context).primaryColor),
+                  ),
+          ),
+          behavior: HitTestBehavior.opaque,
+        );
+      },
+    );
+  }
+
+  void _saveBill() {
+    if (_titlecontroller.text.isEmpty || _pickedImage == null) {
+      return;
+    }
+    Provider.of<Bills>(context, listen: false).addBill(
+        _titlecontroller.text, _pickedImage, numbers[numbers.length - 1],DateTime.now());
+    Navigator.of(context).pop();
+
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return (Scaffold(
       appBar: AppBar(
-        title: Text("Add Bill "),
+        title: Text("Add Bill "),automaticallyImplyLeading: false,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -75,13 +109,22 @@ class _AddBillsScreen extends State<AddBillsScreen> {
                         controller: _titlecontroller,
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 20,
                       ),
-                      ImageInput(_selectimage), SizedBox(height: 20,),
-                      RaisedButton(
-                          child: Text("Capture Bill "), onPressed: readText),
-
-
+                      ImageInput(_selectimage),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      FlatButton.icon(icon: Icon(Icons.list),
+                          color: Theme.of(context).accentColor,
+                          label:  Text(
+                            "Capture Bill ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                          onPressed: readText),
                     ],
                   )),
             ),

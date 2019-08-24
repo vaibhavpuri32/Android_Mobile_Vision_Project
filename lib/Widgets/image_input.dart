@@ -72,7 +72,7 @@ class _ImageInput extends State<ImageInput> {
                 )
               : Text(
                   "No image Chosen",
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.center, style: TextStyle(fontSize: 20),
                 ),
           alignment: Alignment.center,
         ),

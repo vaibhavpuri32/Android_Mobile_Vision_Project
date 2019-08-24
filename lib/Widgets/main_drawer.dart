@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../screens/add_bills_screen.dart';
 import '../screens/bills_list_screen.dart';
 
-class AppMainDrawer extends StatelessWidget {
+class MainDrawer extends StatelessWidget {
   static const routeName = "main-drawer";
 
   @override
@@ -19,7 +19,7 @@ class AppMainDrawer extends StatelessWidget {
             Divider(),
             ListTile(
               leading: Icon(Icons.scanner),
-              title: Text("Scan a Bill"),
+              title: Text("Add a Bill", style: TextStyle(fontSize: 20),),
               onTap: () {
                 Navigator.of(context).pushReplacementNamed(AddBillsScreen.routeName);
               },
@@ -27,7 +27,7 @@ class AppMainDrawer extends StatelessWidget {
             Divider(),
             ListTile(
               leading: Icon(Icons.attach_money),
-              title: Text("Your Bills"),
+              title: Text("Your Bills", style: TextStyle(fontSize: 20)),
               onTap: () {
                 Navigator.of(context).pushReplacementNamed(BillListScreen.routeName);
               },

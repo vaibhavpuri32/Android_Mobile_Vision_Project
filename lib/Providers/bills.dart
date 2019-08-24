@@ -38,9 +38,8 @@ class Bills with ChangeNotifier {
             price: item["price"],
             image: File(item["image"]),
             title: item["title"],
-            time: item["time"]))
+            time: DateTime.parse(item["time"])))
         .toList();
-
     notifyListeners();
   }
 }

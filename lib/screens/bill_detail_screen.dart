@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import '../Providers/bills.dart';
-import '../models/bill.dart';
+
 
 class BillDetailScreen extends StatefulWidget {
   static const routeName = "bill-detail-screen";
-    @override
+
+  @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
     return _BillDetailScreen();
   }
 }
-  class _BillDetailScreen extends State<BillDetailScreen>{
+
+class _BillDetailScreen extends State<BillDetailScreen> {
   @override
   Widget build(BuildContext context) {
-
     final billData =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
 
@@ -37,9 +36,9 @@ class BillDetailScreen extends StatefulWidget {
           Text("Scanned on: " +
               DateFormat("dd / MM / yyyy  hh:mm ").format(time)),
           Container(
-            height: 400,
+            margin: EdgeInsets.all(20),
+            height: 300,
             alignment: Alignment.center,
-            padding: EdgeInsets.all(30),
             child: Image.file(
               image,
               fit: BoxFit.cover,
@@ -53,7 +52,6 @@ class BillDetailScreen extends StatefulWidget {
             style:
                 TextStyle(fontSize: 25, color: Theme.of(context).primaryColor),
           ),
-
         ],
       ),
     ));

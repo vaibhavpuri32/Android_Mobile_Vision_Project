@@ -47,6 +47,9 @@ class _AddBillsScreen extends State<AddBillsScreen> {
     for (i = 0; i < numbers.length; i++) {
       print(numbers[i]);
     }
+
+
+
     /*  int i;
     for(i=0; i<numbers.length; i++)
       {  print(numbers[i]);
@@ -65,7 +68,7 @@ class _AddBillsScreen extends State<AddBillsScreen> {
             child: numbers.length > 0
                 ? Text(
                     "The Bill is  Rs.  " +
-                        (numbers[numbers.length - 1]).toString(),
+                        numbers[numbers.length-1].toString(),
                     style: TextStyle(fontSize: 30, color: Theme.of(context).primaryColor),
                   )
                 : Text(
@@ -84,7 +87,7 @@ class _AddBillsScreen extends State<AddBillsScreen> {
       return;
     }
     Provider.of<Bills>(context, listen: false).addBill(
-        _titlecontroller.text, _pickedImage, numbers[numbers.length - 1],DateTime.now());
+        _titlecontroller.text, _pickedImage, numbers[numbers.length-1] ,DateTime.now());
     Navigator.of(context).pop();
 
   }
@@ -93,8 +96,9 @@ class _AddBillsScreen extends State<AddBillsScreen> {
   Widget build(BuildContext context) {
     return (Scaffold(
       appBar: AppBar(
-        title: Text("Add Bill "),automaticallyImplyLeading: false,
+        title: Text("Add Bill "),
       ),
+      drawer: MainDrawer(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[

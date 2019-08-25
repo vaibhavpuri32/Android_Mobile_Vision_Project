@@ -4,7 +4,6 @@ import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../Widgets/main_drawer.dart';
-import 'package:provider/provider.dart';
 import '../Providers/bills.dart';
 import '../Widgets/image_input.dart';
 
@@ -48,17 +47,6 @@ class _AddBillsScreen extends State<AddBillsScreen> {
       print(numbers[i]);
     }
 
-
-
-    /*  int i;
-    for(i=0; i<numbers.length; i++)
-      {  print(numbers[i]);
-      print("\n");} */
-    /* showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: Text("The Bill is  Rs "+(numbers[numbers.length-1]).toString(), style: TextStyle(fontSize: 30),)
-        )); */
     showModalBottomSheet(
       context: context,
       builder: (context) {

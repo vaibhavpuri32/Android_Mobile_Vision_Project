@@ -32,7 +32,7 @@ Dart
 
 ## Third Party packages used: 
   provider: ^3.0.0+1
-  image_picker: ^0.6.1+3
+   image_picker: ^0.6.1+3
   path_provider: ^1.2.0
   path: ^1.6.2
   firebase_ml_vision: ^0.9.2
